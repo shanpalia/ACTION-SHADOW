@@ -32,7 +32,7 @@ jobs:
             exit 1
           fi
           yes | "$SDKMANAGER" --licenses >/dev/null || true
-          "$SDKMANAGER" --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          "$SDKMANAGER" --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;23.2.8568313"
 
       - name: Install Godot 4.3 and Android export templates
         run: |
@@ -83,6 +83,10 @@ jobs:
           PY
 
       - name: Export debug APK
+        env:
+          GODOT_ANDROID_KEYSTORE_DEBUG_PATH: ${{ github.workspace }}/../.android/debug.keystore
+          GODOT_ANDROID_KEYSTORE_DEBUG_USER: androiddebugkey
+          GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: android
         run: |
           mkdir -p build
           godot --headless --path . --verbose --export-debug "Android" build/ACTION-SHADOW.apk
