@@ -38,6 +38,48 @@ func _ready() -> void:
     stage_label.size = Vector2(438, 32)
     hud_label.position = Vector2(30, 56)
     hud_label.size = Vector2(438, 30)
+    stage_label.text = "MISSION 01   /   JUNGLE OUTPOST"
+    # Replace the classic plain-text HUD with a layered sci-fi interface.
+    var tag := Label.new()
+    tag.name = "MissionTag"
+    tag.text = "A S   /   TACTICAL DISPLAY"
+    tag.position = Vector2(16, 130)
+    tag.size = Vector2(260, 24)
+    tag.add_theme_font_size_override("font_size", 13)
+    tag.add_theme_color_override("font_color", Color(0.25, 0.94, 0.79, 0.9))
+    tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(tag)
+    var score_panel := Panel.new()
+    score_panel.name = "ScorePanel"
+    score_panel.position = Vector2(930, 18)
+    score_panel.size = Vector2(320, 76)
+    var score_style := StyleBoxFlat.new()
+    score_style.bg_color = Color(0.008, 0.025, 0.04, 0.78)
+    score_style.border_color = Color(0.25, 0.78, 1.0, 0.9)
+    score_style.set_border_width_all(2)
+    score_style.set_corner_radius_all(8)
+    score_panel.add_theme_stylebox_override("panel", score_style)
+    score_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(score_panel)
+    var score_tag := Label.new()
+    score_tag.name = "ScoreTag"
+    score_tag.text = "MISSION SCORE"
+    score_tag.position = Vector2(950, 27)
+    score_tag.size = Vector2(275, 22)
+    score_tag.add_theme_font_size_override("font_size", 13)
+    score_tag.add_theme_color_override("font_color", Color(0.35, 0.83, 1.0))
+    score_tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(score_tag)
+    var score_value := Label.new()
+    score_value.name = "ScoreValue"
+    score_value.position = Vector2(950, 48)
+    score_value.size = Vector2(275, 34)
+    score_value.add_theme_font_size_override("font_size", 24)
+    score_value.add_theme_color_override("font_color", Color(0.88, 1.0, 1.0))
+    score_value.add_theme_constant_override("outline_size", 2)
+    score_value.add_theme_color_override("font_outline_color", Color(0.0, 0.04, 0.07, 1.0))
+    score_value.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(score_value)
     # Minimal futuristic health bar under the status text.
     var health_back := ColorRect.new()
     health_back.name = "HealthBarBack"
@@ -170,4 +212,10 @@ func clear_stage_objects() -> void:
 
 func update_hud() -> void:
     if is_instance_valid(hud_label):
-        hud_label.text = "HP %d   /   ENERGY GUN   /   SCORE %06d" % [GameState.health, GameState.score]
+        hud_label.text = "HP  %03d     /     ENERGY GUN" % [GameState.health]
+        var score_value := $HUD.get_node_or_null("ScoreValue") as Label
+        if is_instance_valid(score_value):
+            score_value.text = "%06d" % GameState.score
+        var health_fill := $HUD.get_node_or_null("HealthBar") as ColorRect
+        if is_instance_valid(health_fill):
+            health_fill.size.x = 430.0 * clampf(float(GameState.health) / 100.0, 0.0, 1.0)
