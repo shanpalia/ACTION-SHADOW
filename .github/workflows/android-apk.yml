@@ -1,0 +1,42 @@
+name: Build ACTION SHADOW Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android-apk:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3.0
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Prepare Android export
+        run: |
+          mkdir -p build
+          godot --version
+          if [ ! -d "$HOME/.config/godot" ]; then mkdir -p "$HOME/.config/godot"; fi
+          godot --headless --editor --path . --quit
+
+      - name: Export debug APK
+        run: |
+          godot --headless --path . --export-debug "Android" build/ACTION-SHADOW.apk
+
+      - name: Verify APK exists
+        run: |
+          test -s build/ACTION-SHADOW.apk
+          ls -lh build/ACTION-SHADOW.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ACTION-SHADOW-Android-APK
+          path: build/ACTION-SHADOW.apk
+          if-no-files-found: error
+          retention-days: 14
