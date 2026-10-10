@@ -10,10 +10,32 @@ func _ready() -> void:
     # Keep the gameplay view immersive on Android and desktop fullscreen.
     if OS.has_feature("android"):
         DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
-    hud_label.add_theme_color_override("font_color", Color(0.82, 0.98, 1.0))
-    stage_label.add_theme_color_override("font_color", Color(0.42, 1.0, 0.86))
-    hud_label.add_theme_font_size_override("font_size", 19)
-    stage_label.add_theme_font_size_override("font_size", 22)
+    # Build a clearly visible modern HUD rather than the old plain labels.
+    hud_label.add_theme_color_override("font_color", Color(0.88, 1.0, 1.0))
+    stage_label.add_theme_color_override("font_color", Color(0.38, 1.0, 0.79))
+    hud_label.add_theme_font_size_override("font_size", 18)
+    stage_label.add_theme_font_size_override("font_size", 20)
+    hud_label.add_theme_constant_override("outline_size", 3)
+    hud_label.add_theme_color_override("font_outline_color", Color(0.01, 0.08, 0.09, 0.95))
+    stage_label.add_theme_constant_override("outline_size", 3)
+    stage_label.add_theme_color_override("font_outline_color", Color(0.01, 0.08, 0.09, 0.95))
+    var hud_panel := Panel.new()
+    hud_panel.name = "HUDPanel"
+    hud_panel.position = Vector2(12, 10)
+    hud_panel.size = Vector2(430, 88)
+    var panel_style := StyleBoxFlat.new()
+    panel_style.bg_color = Color(0.015, 0.055, 0.065, 0.78)
+    panel_style.border_color = Color(0.12, 0.72, 0.65, 0.8)
+    panel_style.set_border_width_all(1)
+    panel_style.set_corner_radius_all(8)
+    hud_panel.add_theme_stylebox_override("panel", panel_style)
+    hud_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(hud_panel)
+    $HUD.move_child(hud_panel, 0)
+    stage_label.position = Vector2(24, 16)
+    stage_label.size = Vector2(405, 32)
+    hud_label.position = Vector2(24, 52)
+    hud_label.size = Vector2(405, 30)
     GameState.hud_changed.connect(update_hud)
     build_environment()
     spawn_enemies()
@@ -117,4 +139,4 @@ func clear_stage_objects() -> void:
 
 func update_hud() -> void:
     if is_instance_valid(hud_label):
-        hud_label.text = "HP %d   •   ENERGY GUN   •   SCORE %06d" % [GameState.health, GameState.score]
+        hud_label.text = "HP %d   /   ENERGY GUN   /   SCORE %06d" % [GameState.health, GameState.score]
