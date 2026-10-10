@@ -30,16 +30,16 @@ func make_button(parent: Control, label_text: String, offset: Vector2, button_si
     b.add_theme_color_override("font_hover_color", Color.WHITE)
     b.add_theme_color_override("font_pressed_color", Color.WHITE)
     var normal := StyleBoxFlat.new()
-    normal.bg_color = Color(0.015, 0.09, 0.10, 0.72)
-    normal.border_color = Color(0.25, 0.86, 0.83, 0.85)
+    normal.bg_color = Color(0.008, 0.035, 0.045, 0.78)
+    normal.border_color = Color(0.30, 0.95, 0.83, 0.95)
     normal.set_border_width_all(2)
-    normal.set_corner_radius_all(4)
+    normal.set_corner_radius_all(8)
     normal.content_margin_left = 8
     normal.content_margin_right = 8
     normal.content_margin_top = 6
     normal.content_margin_bottom = 6
     var pressed := normal.duplicate() as StyleBoxFlat
-    pressed.bg_color = Color(0.04, 0.48, 0.40, 0.92)
+    pressed.bg_color = Color(0.0, 0.72, 0.53, 0.98)
     b.add_theme_stylebox_override("normal", normal)
     b.add_theme_stylebox_override("hover", normal)
     b.add_theme_stylebox_override("pressed", pressed)
