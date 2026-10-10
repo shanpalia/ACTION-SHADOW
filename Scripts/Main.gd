@@ -7,6 +7,13 @@ var stage_length := 34.0
 var stage_spawned := false
 
 func _ready() -> void:
+    # Keep the gameplay view immersive on Android and desktop fullscreen.
+    if OS.has_feature("android"):
+        DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+    hud_label.add_theme_color_override("font_color", Color(0.82, 0.98, 1.0))
+    stage_label.add_theme_color_override("font_color", Color(0.42, 1.0, 0.86))
+    hud_label.add_theme_font_size_override("font_size", 19)
+    stage_label.add_theme_font_size_override("font_size", 22)
     GameState.hud_changed.connect(update_hud)
     build_environment()
     spawn_enemies()
@@ -110,4 +117,4 @@ func clear_stage_objects() -> void:
 
 func update_hud() -> void:
     if is_instance_valid(hud_label):
-        hud_label.text = "HP %d     ENERGY GUN  •  SCORE %06d" % [GameState.health, GameState.score]
+        hud_label.text = "HP %d   •   ENERGY GUN   •   SCORE %06d" % [GameState.health, GameState.score]
