@@ -1,0 +1,78 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_main"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="2_player"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+size = Vector3(100, 1, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape_ground"]
+size = Vector3(100, 1, 8)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+radius = 0.42
+height = 1.7
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape_player"]
+radius = 0.42
+height = 1.7
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 1
+background_color = Color(0.035, 0.055, 0.09, 1)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.8, -0.4, 0)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+position = Vector3(10, -0.5, 0)
+mesh = SubResource("BoxMesh_ground")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+position = Vector3(10, -0.5, 0)
+shape = SubResource("BoxShape_ground")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+position = Vector3(-4, 1, 0)
+script = ExtResource("2_player")
+groups = ["player"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+position = Vector3(0, 0.05, 0)
+mesh = SubResource("CapsuleMesh_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape_player")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(0, 5.5, 16)
+rotation = Vector3(-0.24, 0, 0)
+current = true
+fov = 60.0
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Stage" type="Label" parent="HUD"]
+offset_left = 22.0
+offset_top = 16.0
+offset_right = 640.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 24
+text = "STAGE 1 • JUNGLE OUTPOST"
+
+[node name="Info" type="Label" parent="HUD"]
+offset_left = 22.0
+offset_top = 58.0
+offset_right = 650.0
+offset_bottom = 92.0
+theme_override_font_sizes/font_size = 20
+text = "HP 100  ENERGY GUN • SCORE 000000"
