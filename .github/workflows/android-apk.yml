@@ -82,6 +82,17 @@ jobs:
           print("Configured debug keystore path in Android export preset.")
           PY
 
+      - name: Diagnose Android export preset
+        run: |
+          echo "Godot version:"
+          godot --version
+          echo "Android SDK packages:"
+          ls -d "$ANDROID_HOME/platforms/android-34" "$ANDROID_HOME/build-tools/34.0.0" "$ANDROID_HOME/ndk/23.2.8568313" "$ANDROID_HOME/cmake/3.10.2.4988404"
+          echo "Export templates:"
+          ls -l "$HOME/.local/share/godot/export_templates/4.3.stable/android_debug.apk" "$HOME/.local/share/godot/export_templates/4.3.stable/android_release.apk"
+          echo "Effective preset signing values:"
+          grep -E 'package/signed|keystore/debug' export_presets.cfg
+
       - name: Export debug APK
         run: |
           export GODOT_ANDROID_KEYSTORE_DEBUG_PATH="$HOME/.android/debug.keystore"
@@ -89,7 +100,7 @@ jobs:
           export GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD="android"
           test -f "$GODOT_ANDROID_KEYSTORE_DEBUG_PATH"
           mkdir -p build
-          godot --headless --path . --verbose --export-debug "Android" build/ACTION-SHADOW.apk
+          godot --headless --editor --path . --verbose --export-debug "Android" build/ACTION-SHADOW.apk
 
       - name: Verify APK exists
         run: |
