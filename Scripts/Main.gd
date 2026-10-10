@@ -26,7 +26,7 @@ func _process(_delta: float) -> void:
 
 func build_environment() -> void:
     var mood: Dictionary = GameState.stage_moods[GameState.stage_index]
-    var world_env := $WorldEnvironment.environment
+    var world_env: Environment = $WorldEnvironment.environment
     world_env.background_mode = Environment.BG_COLOR
     world_env.background_color = mood.sky
     var ground_mat := StandardMaterial3D.new()
