@@ -21,21 +21,52 @@ func _ready() -> void:
     stage_label.add_theme_color_override("font_outline_color", Color(0.01, 0.08, 0.09, 0.95))
     var hud_panel := Panel.new()
     hud_panel.name = "HUDPanel"
-    hud_panel.position = Vector2(12, 10)
-    hud_panel.size = Vector2(430, 88)
+    hud_panel.position = Vector2(16, 14)
+    hud_panel.size = Vector2(468, 106)
     var panel_style := StyleBoxFlat.new()
-    panel_style.bg_color = Color(0.015, 0.055, 0.065, 0.78)
-    panel_style.border_color = Color(0.12, 0.72, 0.65, 0.8)
-    panel_style.set_border_width_all(1)
-    panel_style.set_corner_radius_all(8)
+    panel_style.bg_color = Color(0.008, 0.025, 0.04, 0.84)
+    panel_style.border_color = Color(0.05, 0.95, 0.77, 0.95)
+    panel_style.set_border_width_all(2)
+    panel_style.set_corner_radius_all(10)
+    panel_style.shadow_color = Color(0.0, 0.9, 0.72, 0.18)
+    panel_style.shadow_size = 8
     hud_panel.add_theme_stylebox_override("panel", panel_style)
     hud_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
     $HUD.add_child(hud_panel)
     $HUD.move_child(hud_panel, 0)
-    stage_label.position = Vector2(24, 16)
-    stage_label.size = Vector2(405, 32)
-    hud_label.position = Vector2(24, 52)
-    hud_label.size = Vector2(405, 30)
+    stage_label.position = Vector2(30, 20)
+    stage_label.size = Vector2(438, 32)
+    hud_label.position = Vector2(30, 56)
+    hud_label.size = Vector2(438, 30)
+    # Minimal futuristic health bar under the status text.
+    var health_back := ColorRect.new()
+    health_back.name = "HealthBarBack"
+    health_back.position = Vector2(30, 91)
+    health_back.size = Vector2(430, 5)
+    health_back.color = Color(0.12, 0.20, 0.23, 1.0)
+    health_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(health_back)
+    var health_fill := ColorRect.new()
+    health_fill.name = "HealthBar"
+    health_fill.position = Vector2(30, 91)
+    health_fill.size = Vector2(430, 5)
+    health_fill.color = Color(0.05, 1.0, 0.63, 1.0)
+    health_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(health_fill)
+    # Small aiming reticle, centered in the play area.
+    var reticle := Label.new()
+    reticle.name = "Reticle"
+    reticle.text = "+"
+    reticle.position = Vector2(628, 330)
+    reticle.size = Vector2(24, 30)
+    reticle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    reticle.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    reticle.add_theme_font_size_override("font_size", 26)
+    reticle.add_theme_color_override("font_color", Color(0.35, 1.0, 0.84, 0.85))
+    reticle.add_theme_constant_override("outline_size", 2)
+    reticle.add_theme_color_override("font_outline_color", Color(0.0, 0.05, 0.07, 1.0))
+    reticle.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    $HUD.add_child(reticle)
     GameState.hud_changed.connect(update_hud)
     build_environment()
     spawn_enemies()
