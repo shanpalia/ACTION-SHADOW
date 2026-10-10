@@ -13,11 +13,12 @@ func _ready() -> void:
     var root := Control.new()
     root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     layer.add_child(root)
-    # Keep controls clear of the screen edges and aligned along the bottom.
-    make_button(root, "◀", Vector2(24, -108), Vector2(82, 72), "left")
-    make_button(root, "▶", Vector2(116, -108), Vector2(82, 72), "right")
-    make_button(root, "JUMP", Vector2(-218, -108), Vector2(98, 72), "jump")
-    make_button(root, "FIRE", Vector2(-110, -108), Vector2(98, 72), "fire")
+    # Match the requested gameplay screenshot: movement bottom-left,
+    # JUMP above FIRE on the bottom-right.
+    make_button(root, "◀", Vector2(38, -118), Vector2(86, 76), "left")
+    make_button(root, "▶", Vector2(132, -118), Vector2(86, 76), "right")
+    make_button(root, "JUMP", Vector2(-202, -146), Vector2(94, 64), "jump")
+    make_button(root, "FIRE", Vector2(-106, -88), Vector2(94, 64), "fire")
 
 func make_button(parent: Control, label_text: String, offset: Vector2, button_size: Vector2, action: String) -> void:
     var b := Button.new()
@@ -32,7 +33,7 @@ func make_button(parent: Control, label_text: String, offset: Vector2, button_si
     normal.bg_color = Color(0.015, 0.09, 0.10, 0.72)
     normal.border_color = Color(0.25, 0.86, 0.83, 0.85)
     normal.set_border_width_all(2)
-    normal.set_corner_radius_all(10)
+    normal.set_corner_radius_all(4)
     normal.content_margin_left = 8
     normal.content_margin_right = 8
     normal.content_margin_top = 6
