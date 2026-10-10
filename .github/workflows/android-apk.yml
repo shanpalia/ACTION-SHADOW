@@ -83,11 +83,11 @@ jobs:
           PY
 
       - name: Export debug APK
-        env:
-          GODOT_ANDROID_KEYSTORE_DEBUG_PATH: ${{ github.workspace }}/../.android/debug.keystore
-          GODOT_ANDROID_KEYSTORE_DEBUG_USER: androiddebugkey
-          GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: android
         run: |
+          export GODOT_ANDROID_KEYSTORE_DEBUG_PATH="$HOME/.android/debug.keystore"
+          export GODOT_ANDROID_KEYSTORE_DEBUG_USER="androiddebugkey"
+          export GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD="android"
+          test -f "$GODOT_ANDROID_KEYSTORE_DEBUG_PATH"
           mkdir -p build
           godot --headless --path . --verbose --export-debug "Android" build/ACTION-SHADOW.apk
 
