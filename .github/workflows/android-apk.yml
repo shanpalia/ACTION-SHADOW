@@ -61,10 +61,31 @@ jobs:
         run: |
           godot --headless --editor --path . --quit
 
+      - name: Configure Android signing in export preset
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+          path = Path("export_presets.cfg")
+          data = path.read_text()
+          marker = 'package/signed=true'
+          signing = (
+              marker + '\n'
+              + 'keystore/debug="' + os.path.expanduser("~/.android/debug.keystore") + '"\n'
+              + 'keystore/debug_user="androiddebugkey"\n'
+              + 'keystore/debug_password="android"'
+          )
+          if marker not in data:
+              raise SystemExit("Could not find package/signed setting in export_presets.cfg")
+          data = data.replace(marker, signing, 1)
+          path.write_text(data)
+          print("Configured debug keystore path in Android export preset.")
+          PY
+
       - name: Export debug APK
         run: |
           mkdir -p build
-          godot --headless --path . --export-debug "Android" build/ACTION-SHADOW.apk
+          godot --headless --path . --verbose --export-debug "Android" build/ACTION-SHADOW.apk
 
       - name: Verify APK exists
         run: |
