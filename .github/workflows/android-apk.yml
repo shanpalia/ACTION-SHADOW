@@ -32,7 +32,7 @@ jobs:
             exit 1
           fi
           yes | "$SDKMANAGER" --licenses >/dev/null || true
-          "$SDKMANAGER" --install "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+          "$SDKMANAGER" --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Install Godot 4.3 and Android export templates
         run: |
